@@ -1,0 +1,27 @@
+ENV variable : - 
+
+depend on which bundler you use : - 
+
+env make always in root . 
+
+AFTER MAKING NOT TO UPLOAD IN GITHUB 
+
+this env data get is difrrent in backend and frontend and cra or vite .
+
+after changing in env folder make sure close the server and resatart it .
+
+
+------------------------------------------------------------------Good__approach.
+
+# we have to see vendor login : - 
+
+we have to create apllication like we we can remove auth sytem in our code so our application can work .
+
+
+concept of service . it snothing but it only a classes . we ahve import it and use it directly .
+
+
+
+
+
+
