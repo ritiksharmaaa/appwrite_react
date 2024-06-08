@@ -9,29 +9,29 @@ import {Header , Footer} from './components';
 // console.log(import.meta.env.VITE_APPWRITE_URL)
 
 function App() {
-  const [loading , setLoading] = useState(true)
+  const [loading , setLoading] = useState(false)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    authService.getCurrentUser()
-    .then((userdata) =>{
-      if (userdata){
-        dispatch(login({userdata}))
+  // useEffect(() => {
+  //   authService.getCurrentUser()
+  //   .then((userdata) =>{
+  //     if (userdata){
+  //       dispatch(login({userdata}))
 
-      }else{
-        dispatch(logout())
+  //     }else{
+  //       dispatch(logout())
 
-      }
+  //     }
       
-    })
-    .finally(()=>
-      setLoading(false)
-    )
+  //   })
+  //   .finally(()=>
+  //     setLoading(false)
+  //   )
 
     
 
 
-  } , [])
+  // } , [])
 
   if (!loading){
     return (
