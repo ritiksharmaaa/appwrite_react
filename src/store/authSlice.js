@@ -10,7 +10,7 @@ userData : null
 }
 
 const AuthSlice = createSlice({
-name :"auth",
+name : "auth",
 initialState ,
 reducers : {
     login: (state , action) => {

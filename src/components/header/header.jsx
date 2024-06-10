@@ -5,8 +5,9 @@ import { Container , Logo , LogoutButton  } from '../index.js'
 import { Link , useNavigate } from 'react-router-dom'
 
 function Header(){
-    const authStatus = useSelector((state) => state.auths.status)
-    const Navigate =  useNavigate()
+    const authStatus = useSelector((state) => state.auth.status)
+    // console.log(authStatus , " now i am working ")
+    const navigate  =  useNavigate()
     const navItem = [
         {name : 'Home',
         slug :'/',
@@ -48,7 +49,7 @@ function Header(){
                         {navItem.map((item)=>(
                             item.active ? (
                                 <li className='{item.name}'>
-                                    <button className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full' onClick={() => Navigate(item.slug)}>{item.name}</button>
+                                    <button className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full' onClick={() => navigate(item.slug)}>{item.name}</button>
                                 </li>
                             ) : null
                         ))}
