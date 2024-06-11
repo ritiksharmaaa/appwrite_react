@@ -1,10 +1,12 @@
 import React , {useState } from 'react'
 import {Link  , useNavigate } from 'react-router-dom'
 import {login as authlogin } from '../store/authSlice'
-import { Button ,Input , Logo  } from './index '
+
+import { Input, Button, Logo} from "./index";
 import { useDispatch  } from 'react-redux'
 import authService  from '../appwrite/auth'
-import {useForm} from 'reat-hook-form'
+import {useform} from 'react-hook-form'
+
 
 
 //  auth login is 
@@ -13,7 +15,7 @@ import {useForm} from 'reat-hook-form'
 function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const  {register , handelSubmit} = useForm()
+    const  {register , handelSubmit} = useform()
     cosnt [error , setError] = useState("")
 //    doing asyn because we dont know how much time it take to get data from server 
     const login = async (data ) =>{

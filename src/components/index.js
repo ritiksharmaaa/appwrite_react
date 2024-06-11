@@ -10,7 +10,8 @@ import Login  from "./Login";
 import SignUp from './SignUp'
 import Select from './Select'
 import RTE  from "./Rte-Sample";
+import PostForm from './PostForm'
 
 
 
-export {Header , RTE , Footer , Logo , Container  , LogoutButton  , Button , Input , Protected  ,  Login , SignUp , Select  } 
+export {Header , RTE , Footer , Logo , Container  , LogoutButton  , Button , Input , Protected  ,  Login , SignUp , Select  , PostForm } 
