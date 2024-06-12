@@ -9,8 +9,8 @@ function Post() {
   const [post, setPost] = useState(null);
   const { slug } = useParams();
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.auth.useData);
-  const isAuthore = post && userDate ? post.userId === userData.$id : false;
+  const userData = useSelector((state) => state.auth.userData);
+  const isAuthore = post && userData ? post.userId === userData.$id : false;
 
   useEffect(() => {
     if (slug) {
@@ -19,6 +19,7 @@ function Post() {
       });
     } else navigate("/");
   }, [slug, navigate]);
+
   const deletePost = () => {
     appwriteService.deletePost(post.$id).then((status) => {
       if (status) {
@@ -46,6 +47,10 @@ function Post() {
                     </Button>
                 
                 </Link>
+                <Button bgColor="bg-red-500" onClick={deletePost}>
+                                Delete
+                            </Button>
+
             </div>
           )}
         </div>

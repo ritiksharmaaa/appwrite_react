@@ -5,7 +5,7 @@ import { Controller } from "react-hook-form";
 
 //  control props came from controller of hooks form
 
-function RTE({ name, control, label, defaultValue }) {
+function RTE({ name, control, label, defaultValue="" }) {
   return (
     <div className="w-full ">
       {label && <labe className="inline-block mb-1 pl-1 ">{label}</labe>}
@@ -28,7 +28,7 @@ function RTE({ name, control, label, defaultValue }) {
                 "undo redo | formatselect | bold italic | backcolor |  alignleft aligncenter alignjustify  |  bulllist numlist outdent indent | removeformat help ",
                 content_style : "body {font-family:Helvetica, Arial , sans-serif ; font-size:14px }"
             }}
-            onEditorChange={onchange}
+            onEditorChange={onChange}
           />
         )}
       />

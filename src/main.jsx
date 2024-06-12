@@ -4,10 +4,18 @@ import App from './App.jsx'
 import './index.css'
 import { Provider } from 'react-redux'
 import store from './store/store.js';
-import { createBrowserRouter } from 'react-router-dom'
-import Protected from './components/AuthLayout.jsx'
-import AllPost from './pages/AllPost.jsx'
-import AddPost from './pages/AddPost.jsx'
+import { createBrowserRouter , RouterProvider } from 'react-router-dom'
+import {Protected , Login } from './components/index.js'
+
+//  importin all pages 
+
+import AllPosts from './pages/AllPost'
+import AddPost from './pages/AddPost'
+import  Home from './pages/Home'
+import EditPost from './pages/EditPost'
+import Post from './pages/Post'
+// import Login from './pages/LogIn'
+import Signup from './pages/Signup'
 
 
 const router = createBrowserRouter([
@@ -22,76 +30,63 @@ const router = createBrowserRouter([
       },
       {
         path : '/login',
-        element : ()=>{
+        element : (
         < Protected authentication={false}>
         <Login/>
         
         </Protected>
         
-        }
+        )
       },
       {
         path : '/singup',
-        element : ()=>{
+        element : (
         < Protected authentication={false}>
         <Signup/>
         
         </Protected>
         
-        }
+        )
       },
       {
         path : '/all-posts',
-        element : ()=>{
+        element : (
         < Protected authentication={true}>
-        <AllPost/>
+          {" "}
+        <AllPosts/>
         
         </Protected>
         
-        }
+        )
       },
       {
-        path : '/add-posts',
-        element : ()=>{
+        path : '/add-post',
+        element : (
         < Protected authentication={true}>
+          {" "}
         <AddPost/>
         
         </Protected>
         
-        }
-      },
-      {
-        path : '/edit-post/:slug',
-        element : ()=>{
-        < Protected authentication={true}>
-        <AddPost/>
-        
-        </Protected>
-        
-        }
-
+        )
       },
       {
         path : '/edit-post/:slug',
         element : (
-         < Protected authentication>
-         < EditPost />
-         
-         </Protected>
-
+        < Protected authentication={true}>
+        <EditPost />
+        
+        </Protected>
+        
         )
+
       },
       {
         path : '/post/:slug',
-        element : (
-         < Protected authentication>
-         < Post />
-         
-         </Protected>
-
-        )
-      }
-    ]
+        element : <Post/>
+      },
+      
+    ],
   }
 ])
 

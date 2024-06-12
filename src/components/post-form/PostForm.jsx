@@ -1,28 +1,28 @@
 import React from "react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { Input, Button, Select, RTE } from "./index";
-import appwriteService from "../appwrite/config";
+import { Input, Button, Select, RTE } from "../index";
+import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import authService from "../appwrite/auth";
 
 function PostForm({ post }) {
-  const { register, handelSubmit, watch, setValues } = useForm({
+  const { register, handelSubmit, watch, setValues ,getValues , control } = useForm({
     // we pass those value which we want to pass it || here we have to know about may be user came for update so pasiing defaut val is not good because sometime  we are passing a update data like put in form . so we put dynamic data in defualt val
     defaultValues: {
       title: post?.title || "",
       slug: post?.slug || " ",
       content: post?.content || "",
-      status: post?.status || "active ",
+      status: post?.status || "active",
     },
   });
   const navigate = useNavigate();
-  const userdata = useSelector((stata) => state.auth.userdata);
+  const userdata = useSelector((state) => state.auth.userData);
+
   const submit = async (data) => {
     if (post) {
-      const file = (await data.images[0])
-        ? appwriteService.uplordFile(data.image[0])
+      const file =  data.images[0]
+        ?  await appwriteService.uplordFile(data.image[0])
         : null;
       if (file) {
         // if we are update a post so first we have to dele those img which we made at time of creation  so that why at the time of post we have to delete first previos img than we uploard agin in update way .
@@ -30,7 +30,7 @@ function PostForm({ post }) {
       }
       const dbpost = await appwriteService.updatePost(post.$id, {
         ...data,
-        featureImage: file ? file.id : undefined,
+        featuredImage: file ? file.id : undefined,
       });
       if (dbpost) {
         navigate(`/post/${dbpost.$id}`);
@@ -39,8 +39,8 @@ function PostForm({ post }) {
       //  always do first uplord file  or use upper method it optional but good practice
       const file = await appwriteService.uploadFile(data.image[0]);
       if (file) {
-        const fileid = file.$id;
-        data.featureImage = fileid ;
+        const fileId = file.$id;
+        data.featuredImage = fileId ;
         const dbpost = await appwriteService.createPost({
           ...data,
           userid: userdata.$id,
@@ -63,9 +63,9 @@ function PostForm({ post }) {
         .replace(/^[a-zA-Z\d\s]/g,'-')
         .replace(/\s/g,'-')
         //  '''is writen by chat gpt '''
-    return " "
+    return " ";
     
-  } , [])
+  } , []);
   React.useEffect(()=>{
     const subscription = watch((value , {name})=>{
         if (name === 'title'){
@@ -82,7 +82,6 @@ function PostForm({ post }) {
 
   return (
     <form onSubmit={handelSubmit(submit)} className="flex flex-wrap">
-        <div className="w-2/3 px-2"></div>
         <div className="w-2/3 px-2">
             <Input
             label="Title"
