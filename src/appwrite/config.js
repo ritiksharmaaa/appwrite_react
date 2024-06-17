@@ -16,9 +16,11 @@ export class Service {
   }
   async createPost({ title, slug, content, featureImage, status, userId }) {
     try {
+      const documentId =  'unique()'; 
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
+        documentId,
         slug,
         {
           title,
@@ -26,7 +28,7 @@ export class Service {
           featureImage,
           status,
           userId,
-        }
+        },
       );
     } catch (error) {
       console.log("apperite service :: createpost :: error", error);

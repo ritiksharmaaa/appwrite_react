@@ -12,11 +12,11 @@ import {useForm} from 'react-hook-form'
 //  auth login is 
 
 
-function Login() {
+function Login(props) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const  {register , handelSubmit} = useForm()
-    cosnt [error , setError] = useState("")
+    const  {register , handleSubmit} = useForm()
+    const [error , setError] = useState("")
 //    doing asyn because we dont know how much time it take to get data from server 
     const login = async (data ) =>{
         setError('')
@@ -51,7 +51,7 @@ function Login() {
                 Don't have any account?npsp: <Link to="/signup" className='font-medium text-primary translate-all duration-200 hover:underline '> Sign Up</Link>
             </p>
             {error &&  <p className="text-red-600 mt-8 text-center"> {error}</p> }
-            <form onSubmit={handelSubmit(login)} className='mt-8'>
+            <form onSubmit={handleSubmit(login)} className='mt-8'>
                 <div className="space-y-5">
                     <Input
                     label="Email"
@@ -60,7 +60,7 @@ function Login() {
                     {...register('email' , { 
                         required : true ,
                         validate : {
-                            matchPatern: (value) => /^\w+([._]?\w+@\w+)*(\.\w{2,3})+$/.test(v) || "Email address must be a valid address",
+                            matchPatern: (value) => /^\w+([._]?\w+@\w+)*(\.\w{2,3})+$/.test(value) || "Email address must be a valid address",
                         }
                     })}
                     />

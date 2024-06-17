@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function PostForm({ post }) {
-  const { register, handelSubmit, watch, setValues ,getValues , control } = useForm({
+  const { register, handleSubmit, watch, setValue ,getValues , control } = useForm({
     // we pass those value which we want to pass it || here we have to know about may be user came for update so pasiing defaut val is not good because sometime  we are passing a update data like put in form . so we put dynamic data in defualt val
     defaultValues: {
       title: post?.title || "",
@@ -17,12 +17,13 @@ function PostForm({ post }) {
     },
   });
   const navigate = useNavigate();
-  const userdata = useSelector((state) => state.auth.userData);
+  const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
+    console.log(data , "---------------------------------check what data came from form--------------")
     if (post) {
       const file =  data.images[0]
-        ?  await appwriteService.uplordFile(data.image[0])
+        ?  await appwriteService.uploadFile(data.image[0])
         : null;
       if (file) {
         // if we are update a post so first we have to dele those img which we made at time of creation  so that why at the time of post we have to delete first previos img than we uploard agin in update way .
@@ -39,11 +40,12 @@ function PostForm({ post }) {
       //  always do first uplord file  or use upper method it optional but good practice
       const file = await appwriteService.uploadFile(data.image[0]);
       if (file) {
+        console.log("--------------------file-----------upload succefully we are furethure running code -----------")
         const fileId = file.$id;
         data.featuredImage = fileId ;
         const dbpost = await appwriteService.createPost({
           ...data,
-          userid: userdata.$id,
+          userId: userData.$id,
         });
         if (dbpost) {
           navigate(`/post/${dbpost.$id}`);
@@ -69,7 +71,7 @@ function PostForm({ post }) {
   React.useEffect(()=>{
     const subscription = watch((value , {name})=>{
         if (name === 'title'){
-            setValues('slug' , slugTransform(value.title , {shouldValidate : true }))
+            setValue('slug' , slugTransform(value.title , {shouldValidate : true }))
         }
     })
     //  her we can give any name not subscribe to call any function 
@@ -78,10 +80,12 @@ function PostForm({ post }) {
         subscription.unsubscribe 
     }
 
-  }, [watch , slugTransform , setValues])
+  }, [watch , slugTransform , setValue])
 
   return (
-    <form onSubmit={handelSubmit(submit)} className="flex flex-wrap">
+    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+      <div>
+      </div>
         <div className="w-2/3 px-2">
             <Input
             label="Title"
@@ -89,7 +93,7 @@ function PostForm({ post }) {
             className='mb-4'
             {...register('title' , {
               required : true,
-            
+              
             })}
             />
             <Input
@@ -98,10 +102,10 @@ function PostForm({ post }) {
             className='mb-4'
             {...register('slug' , {
               required : true,
-            
+              
             })}
             onInput={(e)=>{
-              setValues('slug' , slugTransform(e.currentTarget.value) , {
+              setValue('slug' , slugTransform(e.currentTarget.value) , {
                 shouldValidate : true 
               });
             }}
@@ -112,17 +116,20 @@ function PostForm({ post }) {
             name='content'
             control={control}
             defaultValues={getValues('content')}
-
+            
             />
         </div>
-        <div className="w-2/3 px-2">
+        
+        <div>
+
+        <div className="w-5/3 px-2">
           <Input 
           label="Feature Image"
           type='file'
           className='mb-3'
           accept="image/png, image/jpg, image/jpeg , image/gif"
           {...register('image', { required : !post})}
-
+          
           />
 
           {post && (
@@ -133,17 +140,20 @@ function PostForm({ post }) {
           )}
 
         </div>
+        <div className="w-5/3 px-2 mt-6">
         <Select
-        option={['active' ,'inactive']}
+        options={['active' ,'inactive']}
         label="Status"
         className="mb-4"
         {...register('status' , {required : true })}
         />
-        <Button type="submit" bgColor={post ? "bg-green-500" : undefined } className="w-full">
+        <Button type="submit" bgColor={post ? "bg-green-500" : undefined } className="w-full  mt-5">
           {post ? "Update" : "Submit"}
 
 
         </Button>
+        </div>
+        </div>
 
     </form>
   )

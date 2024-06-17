@@ -4,16 +4,16 @@ import { Link , useNavigate} from "react-router-dom"
 import {Input , Button, Logo ,} from './index'
 import { login  } from '../store/authSlice' 
 import { useDispatch } from 'react-redux'
-import{useForm  } from 'react-hook-form'
+import{useForm} from 'react-hook-form'
 
 function SignUp() {
   const navigate = useNavigate()
-  const [error , setError]  = useState("")
+  const [error , setErrors]  = useState("")
   const dispatch = useDispatch()
-  const [ register , handelSubmit] = useForm()
+  const {register , handleSubmit} = useForm()
 
   const create = async(data) => {
-    setError("")
+    setErrors("")
     try {
        const userdata = await authService.createAccount(data)
        if (userdata){
@@ -23,7 +23,7 @@ function SignUp() {
        }
       
     } catch (error) {
-      setError(error.message
+      setErrors(error.message
         )
       
     }
@@ -40,11 +40,11 @@ function SignUp() {
                 </div>
                     <h2 className="text-center text-2xl font-bold leading-tight"> Sign in to your account </h2>
             <p className="mt-2 text-center text-base text-black" >
-                if you  have any account?npsp: <Link to="login" className='font-medium text-primary translate-all duration-200 hover:underline '> Sign In </Link>
+                if you  have any account?npsp: <Link to="/login" className='font-medium text-primary translate-all duration-200 hover:underline '> Sign In </Link>
             </p>
             {error &&  <p className="text-red-600 mt-8 text-center"> {error}</p> }
             
-            <form onSubmit={handelSubmit(create)} className='mt-8'>
+            <form onSubmit={handleSubmit(create)} >
                 <div className="space-y-5">
                 <Input
                         label="Full Name: "
@@ -61,7 +61,7 @@ function SignUp() {
                     {...register('email' , { 
                         required : true ,
                         validate : {
-                            matchPatern: (value) => /^\w+([._]?\w+@\w+)*(\.\w{2,3})+$/.test(v) || "Email address must be a valid address",
+                            matchPatern: (value) => /^\w+([._]?\w+@\w+)*(\.\w{2,3})+$/.test(value) || "Email address must be a valid address",
                         }
                     })}
                     />
