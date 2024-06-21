@@ -18,6 +18,7 @@ function PostForm({ post }) {
   });
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
+  // console.log("====================== id user data is commingor not ======== " , userData)
 
   const submit = async (data) => {
     console.log(data , "---------------------------------check what data came from form--------------")
@@ -27,11 +28,11 @@ function PostForm({ post }) {
         : null;
       if (file) {
         // if we are update a post so first we have to dele those img which we made at time of creation  so that why at the time of post we have to delete first previos img than we uploard agin in update way .
-        appwriteService.deleteFile(post.featuredImage);
+        appwriteService.deleteFile(post.featureimage);
       }
       const dbpost = await appwriteService.updatePost(post.$id, {
         ...data,
-        featuredImage: file ? file.id : undefined,
+        featureimage: file ? file.id : undefined,
       });
       if (dbpost) {
         navigate(`/post/${dbpost.$id}`);
@@ -41,11 +42,19 @@ function PostForm({ post }) {
       const file = await appwriteService.uploadFile(data.image[0]);
       if (file) {
         console.log("--------------------file-----------upload succefully we are furethure running code -----------")
+        delete data.image;
         const fileId = file.$id;
-        data.featuredImage = fileId ;
-        const dbpost = await appwriteService.createPost({
+        const datatosend = {
           ...data,
-          userId: userData.$id,
+          userid : userData.$id,
+          featureimage : fileId 
+        }
+        const datas = JSON.stringify(datatosend)
+        console.log(datas)
+        const dbpost = await appwriteService.createPost({
+          // ...data,
+          // userId: userData.$id,
+          datas
         });
         if (dbpost) {
           navigate(`/post/${dbpost.$id}`);
@@ -134,7 +143,7 @@ function PostForm({ post }) {
 
           {post && (
             <div className="w-full mb-4">
-              <img src={authService.getFilePreview(post.featureImage)} alt={post.title} className="round-lg" />
+              <img src={appwriteService.getFilePreview(post.featureimage)} alt={post.title} className="round-lg" />
 
             </div>
           )}

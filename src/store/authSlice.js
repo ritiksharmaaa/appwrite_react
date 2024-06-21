@@ -16,6 +16,7 @@ reducers : {
     login: (state , action) => {
         state.status = true ;
         state.userData = action.payload.userData ;
+        // console.log("suceffully save userdat in store " , state.userData)
     },
     logout : (state) => {
         state.status = false;

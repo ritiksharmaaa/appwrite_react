@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container } from "../components";
 import { useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config";
+import {PostForm} from '../components'
 
 function EditPost() {
   const [post, setPosts] = useState(null);

@@ -23,9 +23,11 @@ function Login(props) {
         try {
              const session = await authService.login(data)
              if (session){
-                const userdata = await authService.getCurrentUser()
-                if (userdata){
-                    dispatch(authLogin(userdata))
+                const userData = await authService.getCurrentUser()
+                // console.log(userData)
+                if (userData){
+                    dispatch(authLogin(userData))
+                    // console.log("we" , userdata)
                 }
                 navigate("/")
              }

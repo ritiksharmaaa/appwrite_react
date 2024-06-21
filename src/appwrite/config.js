@@ -14,21 +14,38 @@ export class Service {
     this.databases = new Databases(this.client);
     this.bucket = new Storage(this.client);
   }
-  async createPost({ title, slug, content, featureImage, status, userId }) {
+  // async createPost(...data) {
+    // async createPost({ title, slug, content, featureimage, status, userid }) {
+    async createPost({datas}) {
+    // const data =  {
+    //   title,
+    //   content,
+    //   featureimage,
+    //   status,
+    //   userid,
+    // }
+    console.log(datas , "this data is coming in config file ")
+  // async createPost({datas}) {
     try {
       const documentId =  'unique()'; 
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         documentId,
-        slug,
-        {
-          title,
-          content,
-          featureImage,
-          status,
-          userId,
-        },
+        // {
+        // i am tring this way to solve actual we giving extra field dat which we have to delete in form data 
+        // via delete formdata.field ; this will delete the data .
+        //   slug,
+        //   title,
+        //   content,
+        //   featureimage,
+        //   status,
+        //   userid
+
+        // }
+        // ...data.title
+        datas,
+      
       );
     } catch (error) {
       console.log("apperite service :: createpost :: error", error);
@@ -123,8 +140,8 @@ export class Service {
     }
   }
 
-  async getFilePreview(fileid) {
-    return await this.bucket.getFilePreview(conf.appwriteBucketId, fileid);
+  getFilePreview(fileid) {
+    return this.bucket.getFilePreview(conf.appwriteBucketId, fileid);
   }
 }
 const service = new Service();

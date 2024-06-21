@@ -3,14 +3,14 @@ import appwriteService from "../appwrite/config"
 import { Link } from 'react-router-dom'
 
 function PostCard({
-    $id , title , featuredImage
+    $id , title , featureimage
 }) {
   return (
     <Link to={`/post/${$id}`}>
 
     <div className='w-full  bg-gray-200 rounded-xl p-4'>
         <div className="w-full justify-center mb-4">
-            <img src={appwriteService.getFilePreview(featuredImage)} alt='title' className='rounded-xl' />
+            <img src={appwriteService.getFilePreview(featureimage)} alt='title' className='rounded-xl' />
 
 
          </div>
