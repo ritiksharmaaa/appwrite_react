@@ -13,6 +13,7 @@ import {useForm} from 'react-hook-form'
 
 
 function Login(props) {
+    const {callback} = props;
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const  {register , handleSubmit} = useForm()
@@ -47,6 +48,10 @@ function Login(props) {
                 <span className='inline-block w-full max-w[100px]'>
                     <Logo width="100%"/>
                 </span>
+                <button  onClick={callback}>
+        X
+      </button>
+
             </div>
             <h2 className="text-center text-2xl font-bold leading-tight"> Sign in to your account </h2>
             <p className="mt-2 text-center text-base text-black" >

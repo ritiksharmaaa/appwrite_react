@@ -24,7 +24,7 @@ export class Service {
     //   status,
     //   userid,
     // }
-    console.log(datas , "this data is coming in config file ")
+    // console.log(datas , "this data is coming in config file ")
   // async createPost({datas}) {
     try {
       const documentId =  'unique()'; 

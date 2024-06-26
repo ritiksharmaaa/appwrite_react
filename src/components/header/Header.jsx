@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useSelector} from 'react-redux'
 import { Container , Logo , LogoutBtn  } from '../index.js'
 
@@ -36,7 +37,7 @@ function Header(){
         },
      ]
     return (
-        <header className=" py-3 shadw ng-gray-500">
+        <header className=" py-3 shadw bg-emerald-50">
             <Container>
                 <nav className="flex">
                     <div className="mr-4">

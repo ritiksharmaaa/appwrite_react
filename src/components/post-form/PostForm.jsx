@@ -16,14 +16,16 @@ function PostForm({ post }) {
       status: post?.status || "active",
     },
   });
+  // console.log( "i am coming ", getValues('content'))
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
   // console.log("====================== id user data is commingor not ======== " , userData)
 
   const submit = async (data) => {
-    console.log(data , "---------------------------------check what data came from form--------------")
+    // console.log(data , "---------------------------------check what data came from form--------------")
     if (post) {
-      const file =  data.images[0]
+      console.log("post iside update button run or not " , post)
+      const file =  data.image[0]
         ?  await appwriteService.uploadFile(data.image[0])
         : null;
       if (file) {
@@ -41,7 +43,7 @@ function PostForm({ post }) {
       //  always do first uplord file  or use upper method it optional but good practice
       const file = await appwriteService.uploadFile(data.image[0]);
       if (file) {
-        console.log("--------------------file-----------upload succefully we are furethure running code -----------")
+        // console.log("--------------------file-----------upload succefully we are furethure running code -----------")
         delete data.image;
         const fileId = file.$id;
         const datatosend = {
@@ -50,7 +52,7 @@ function PostForm({ post }) {
           featureimage : fileId 
         }
         const datas = JSON.stringify(datatosend)
-        console.log(datas)
+        // console.log(datas)
         const dbpost = await appwriteService.createPost({
           // ...data,
           // userId: userData.$id,
@@ -93,7 +95,7 @@ function PostForm({ post }) {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-      <div>
+      <div className="border">
       </div>
         <div className="w-2/3 px-2">
             <Input
@@ -121,10 +123,10 @@ function PostForm({ post }) {
             />
 
             <RTE 
-            label='Content :' 
+            label='content :' 
             name='content'
             control={control}
-            defaultValues={getValues('content')}
+            defaultValue={getValues('content')}
             
             />
         </div>

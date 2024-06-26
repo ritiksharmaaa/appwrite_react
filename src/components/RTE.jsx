@@ -6,6 +6,7 @@ import { Controller } from "react-hook-form";
 //  control props came from controller of hooks form
 
 function RTE({ name, control, label, defaultValue="" }) {
+  // console.log("from rte ", defaultValue)
   return (
     <div className="w-full ">
       {label && <label className="inline-block mb-1 pl-1 ">{label}</label>}
@@ -16,7 +17,7 @@ function RTE({ name, control, label, defaultValue="" }) {
           <Editor
           apiKey='jz9n9t0itvz1ib6xq58ot5xnr1fwxgs60rig0uv1l1qhelu8'
 
-            initialValue="defaultValue"
+            initialValue={defaultValue}
             init={{
               branding: false,
               height: 500,
