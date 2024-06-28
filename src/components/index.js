@@ -9,10 +9,10 @@ import Protected  from "./AuthLayout";
 import Login  from "./Login";
 import SignUp from './SignUp'
 import Select from './Select'
-import RTE  from "./Rte";
+import RTE  from "./RTE";
 import PostForm from './post-form/PostForm'
 import PostCard from './PostCard'
 
 
 
-export {Header , RTE , Footer , Logo , Container  , LogoutBtn  , Button , Input , Protected  ,  Login , SignUp , Select  , PostForm  , PostCard} 
+export {Header , RTE , Footer , Logo , Container  , LogoutBtn  , Button , Input , Protected  ,  Login , SignUp , Select  , PostForm  , PostCard}
