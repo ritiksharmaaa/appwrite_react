@@ -8,6 +8,7 @@ export class Service {
   // this bucket is called storage here .
   bucket;
   constructor() {
+    console.log(conf.appwriteUrl)
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
