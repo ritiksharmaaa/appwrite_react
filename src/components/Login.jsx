@@ -28,7 +28,7 @@ function Login(props) {
                 // console.log(userData)
                 if (userData){
                     dispatch(authLogin(userData))
-                    // console.log("we" , userdata)
+                    console.log("we" , userdata)
                 }
                 navigate("/")
              }
