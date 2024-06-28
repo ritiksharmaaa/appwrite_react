@@ -48,7 +48,7 @@ function PostForm({ post }) {
         const fileId = file.$id;
         const datatosend = {
           ...data,
-          userid : userData.$id,
+          userid : userData?.$id,
           featureimage : fileId 
         }
         const datas = JSON.stringify(datatosend)
