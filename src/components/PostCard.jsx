@@ -1,16 +1,26 @@
 import React from 'react'
 import appwriteService from "../appwrite/config"
 import { Link } from 'react-router-dom'
+import SafeImage from "./SafeImage";
 
 function PostCard({
     $id , title , featureimage
 }) {
+  const resolvedImageId = featureimage;
+
   return (
     <Link to={`/post/${$id}`}>
 
     <div className='w-full  bg-gray-200 rounded-xl p-4'>
         <div className="w-full justify-center mb-4">
-            <img src={appwriteService.getFilePreview(featureimage)} alt='title' className='rounded-xl' />
+            <SafeImage
+              src={appwriteService.getFilePreview(resolvedImageId)}
+              alt={title}
+              className="rounded-xl"
+              fallbackSeed={$id || title}
+              width={720}
+              height={420}
+            />
 
 
          </div>
