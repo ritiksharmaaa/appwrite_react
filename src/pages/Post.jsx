@@ -4,6 +4,7 @@ import appwriteService from "../appwrite/config";
 import { useSelector } from "react-redux";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
+import SafeImage from "../components/SafeImage";
 
 function Post() {
   const [post, setPost] = useState(null);
@@ -11,6 +12,8 @@ function Post() {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
   const isAuthore = post && userData ? post.userid === userData.$id : false;
+  const resolvedImageId =
+    post?.featureimage || post?.featuredImage || post?.featureImage || "";
 
   useEffect(() => {
     if (slug) {
@@ -23,7 +26,9 @@ function Post() {
   const deletePost = () => {
     appwriteService.deletePost(post.$id).then((status) => {
       if (status) {
-        appwriteService.deleteFile(post.featuredImage);
+        const fileId =
+          post.featureimage || post.featuredImage || post.featureImage;
+        if (fileId) appwriteService.deleteFile(fileId);
         navigate("/");
       }
     });
@@ -35,10 +40,13 @@ function Post() {
     <div className="py-8">
       <Container>
         <div className="w-full flex-justify-center mb-4 relative border rounded-xl p-2">
-          <img
-            src={appwriteService.getFilePreview(post.featureimage)}
-            alt={[post.title]}
+          <SafeImage
+            src={appwriteService.getFilePreview(resolvedImageId)}
+            alt={post.title}
             className="rounded-xl"
+            fallbackSeed={post.$id || post.title}
+            width={1200}
+            height={630}
           />
           {isAuthore ? (
             <div className="absolute right-6 top-6">

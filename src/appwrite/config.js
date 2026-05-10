@@ -8,44 +8,23 @@ export class Service {
   // this bucket is called storage here .
   bucket;
   constructor() {
-    console.log(conf.appwriteUrl)
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
     this.databases = new Databases(this.client);
     this.bucket = new Storage(this.client);
   }
-  // async createPost(...data) {
-    // async createPost({ title, slug, content, featureimage, status, userid }) {
-    async createPost({datas}) {
-    // const data =  {
-    //   title,
-    //   content,
-    //   featureimage,
-    //   status,
-    //   userid,
-    // }
-    // console.log(datas , "this data is coming in config file ")
-  // async createPost({datas}) {
+
+  async createPost(payload) {
     try {
-      const documentId =  'unique()'; 
+      const rawData = payload?.datas ?? payload;
+      const dataToSend =
+        typeof rawData === "string" ? JSON.parse(rawData) : rawData;
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        documentId,
-        // {
-        // i am tring this way to solve actual we giving extra field dat which we have to delete in form data 
-        // via delete formdata.field ; this will delete the data .
-        //   slug,
-        //   title,
-        //   content,
-        //   featureimage,
-        //   status,
-        //   userid
-
-        // }
-        // ...data.title
-        datas,
+        ID.unique(),
+        dataToSend
       
       );
     } catch (error) {
@@ -53,18 +32,25 @@ export class Service {
     }
   }
 
-  async updatePost(slug, { title, content, featureImage, status }) {
+  async updatePost(
+    slug,
+    { title, slug: slugField, content, featureimage, featureImage, status }
+  ) {
     try {
+      const resolvedFeatureImage = featureimage ?? featureImage;
+      const dataToUpdate = {};
+      if (title !== undefined) dataToUpdate.title = title;
+      if (slugField !== undefined) dataToUpdate.slug = slugField;
+      if (content !== undefined) dataToUpdate.content = content;
+      if (status !== undefined) dataToUpdate.status = status;
+      if (resolvedFeatureImage !== undefined)
+        dataToUpdate.featureimage = resolvedFeatureImage;
+
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug,
-        {
-          title,
-          content,
-          featureImage,
-          status,
-        }
+        dataToUpdate
       );
     } catch (error) {
       console.log("apperite service :: updatePost :: error", error);
@@ -142,7 +128,9 @@ export class Service {
   }
 
   getFilePreview(fileid) {
-    return this.bucket.getFilePreview(conf.appwriteBucketId, fileid);
+    if (!fileid) return "";
+    const url = this.bucket.getFilePreview(conf.appwriteBucketId, fileid);
+    return typeof url === "string" ? url : url?.toString?.() || "";
   }
 }
 const service = new Service();

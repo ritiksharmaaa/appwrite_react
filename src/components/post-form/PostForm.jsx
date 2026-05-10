@@ -5,8 +5,11 @@ import { Input, Button, Select, RTE } from "../index";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import SafeImage from "../SafeImage";
 
 function PostForm({ post }) {
+  const resolvedImageId =
+    post?.featureimage || post?.featuredImage || post?.featureImage || "";
   const { register, handleSubmit, watch, setValue ,getValues , control } = useForm({
     // we pass those value which we want to pass it || here we have to know about may be user came for update so pasiing defaut val is not good because sometime  we are passing a update data like put in form . so we put dynamic data in defualt val
     defaultValues: {
@@ -25,17 +28,23 @@ function PostForm({ post }) {
     // console.log(data , "---------------------------------check what data came from form--------------")
     if (post) {
       console.log("post iside update button run or not " , post)
-      const file =  data.image[0]
-        ?  await appwriteService.uploadFile(data.image[0])
+      const file = data?.image?.[0]
+        ? await appwriteService.uploadFile(data.image[0])
         : null;
       if (file) {
         // if we are update a post so first we have to dele those img which we made at time of creation  so that why at the time of post we have to delete first previos img than we uploard agin in update way .
-        appwriteService.deleteFile(post.featureimage);
+        if (resolvedImageId) appwriteService.deleteFile(resolvedImageId);
       }
-      const dbpost = await appwriteService.updatePost(post.$id, {
-        ...data,
-        featureimage: file ? file.id : undefined,
-      });
+
+      const updatePayload = {
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        status: data.status,
+        ...(file ? { featureimage: file.$id } : {}),
+      };
+
+      const dbpost = await appwriteService.updatePost(post.$id, updatePayload);
       if (dbpost) {
         navigate(`/post/${dbpost.$id}`);
       }
@@ -44,19 +53,11 @@ function PostForm({ post }) {
       const file = await appwriteService.uploadFile(data.image[0]);
       if (file) {
         // console.log("--------------------file-----------upload succefully we are furethure running code -----------")
-        delete data.image;
-        const fileId = file.$id;
-        const datatosend = {
-          ...data,
-          userid : userData.$id,
-          featureimage : fileId 
-        }
-        const datas = JSON.stringify(datatosend)
-        // console.log(datas)
+        const { image, ...rest } = data;
         const dbpost = await appwriteService.createPost({
-          // ...data,
-          // userId: userData.$id,
-          datas
+          ...rest,
+          userid: userData.$id,
+          featureimage: file.$id,
         });
         if (dbpost) {
           navigate(`/post/${dbpost.$id}`);
@@ -145,7 +146,14 @@ function PostForm({ post }) {
 
           {post && (
             <div className="w-full mb-4">
-              <img src={appwriteService.getFilePreview(post.featureimage)} alt={post.title} className="round-lg" />
+              <SafeImage
+                src={appwriteService.getFilePreview(resolvedImageId)}
+                alt={post.title}
+                className="rounded-lg"
+                fallbackSeed={post.$id || post.title}
+                width={720}
+                height={420}
+              />
 
             </div>
           )}
